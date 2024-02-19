@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import logo from "../assets/logo.png";
 import { getCurrentUser } from "../services/api";
 import Profile from "./Profile";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -18,9 +19,10 @@ const Header = () => {
         })
         .catch((error) => {
           console.error("Error fetching current user:", error);
+          toast.error("Error fetching current user");
         });
     } else {
-      console.error("No authToken found in local storage");
+      toast.error("No token found in local storage. please login first  😱");
       setCurrentUser(null);
     }
   }, [authToken]);
@@ -29,7 +31,12 @@ const Header = () => {
     setShowDetails(!showDetails);
   };
 
-  console.log("currentUser inside header", currentUser);
+  //   useEffect(() => {
+  //     if (currentUser !== null && authToken) {
+  //       console.log("currentUser inside header", currentUser);
+  //     }
+  //   }, [currentUser]);
+
   return (
     <div className="flex justify-between items-center p-2  bg-white shadow-xl sticky top-0 right-0 ">
       {/* Logo */}
