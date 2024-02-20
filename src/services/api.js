@@ -13,7 +13,7 @@ export const getCurrentUser = async (token) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching current user:", error);
-    throw error; // You might want to handle this error in your application
+    console.log("erro in api catch");
+    throw error;
   }
 };

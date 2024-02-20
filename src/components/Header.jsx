@@ -1,16 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import logo from "../assets/logo.png";
 import { getCurrentUser } from "../services/api";
 import Profile from "./Profile";
 import { toast } from "react-toastify";
+import { CartContext } from "../Context";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const { cartState } = useContext(CartContext);
+
   const [currentUser, setCurrentUser] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
   const [cartValue, setCartValue] = useState(0); // Initialize cart value to 0
 
   const authToken = localStorage.getItem("authToken");
 
+  console.log("cartState issss", cartState["cartItems"].length);
   useEffect(() => {
     if (authToken) {
       getCurrentUser(authToken)
@@ -19,7 +25,15 @@ const Header = () => {
         })
         .catch((error) => {
           console.error("Error fetching current user:", error);
-          toast.error("Error fetching current user");
+
+          if (error.response.status == 401) {
+            toast.error(`${error.response.data.message}`);
+            navigate("/");
+            /**
+             * once token is expired.
+             * navigate to login page
+             */
+          }
         });
     } else {
       toast.error("No token found in local storage. please login first  😱");
@@ -60,7 +74,7 @@ const Header = () => {
             <>
               <div className="cart mx-2 ">
                 <span className="bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center text-xs absolute ">
-                  {cartValue}
+                  {cartState["cartItems"].length}
                 </span>
                 <img
                   src="https://cdn-icons-png.freepik.com/512/7835/7835563.png"

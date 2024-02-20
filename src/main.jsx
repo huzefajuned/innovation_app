@@ -11,6 +11,7 @@ import Profile from "./components/Profile";
 import Cart from "./components/Cart";
 import Error from "./components/Error";
 import Header from "./components/Header";
+import { CartProvider } from "./Context";
 
 /**
  * routing
@@ -59,7 +60,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <>
+  <CartProvider>
     <RouterProvider router={router} />
     <ToastContainer
       position="bottom-left"
@@ -75,5 +76,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       theme="dark"
       transition:Flip
     />
-  </>
+  </CartProvider>
 );
